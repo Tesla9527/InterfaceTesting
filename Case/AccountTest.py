@@ -46,6 +46,13 @@ class AccountTest(unittest.TestCase):
         requests.post(url, data=json.dumps(payload), headers=self.headers)
         time.sleep(1)
         return {'email': email, 'password': password, 'nickname': nickname}
+		
+	def get_user_id_by_email(self, email):
+        sql = "select id from database_name where database_table.email = '" + email + "'"
+        db_helper = DbHelper(self.env)
+        result = db_helper.query(sql)
+        db_helper.close()
+        return result[0][0]
 
     # =========================================
     # Test Cases
