@@ -1,4 +1,4 @@
-import optparse
+import argparse
 import os
 from xmlrunner import XMLTestRunner
 
@@ -50,34 +50,33 @@ def clean_reports():
 
 
 def main():
-    parser = optparse.OptionParser(usage='Interface automation test', formatter=optparse.IndentedHelpFormatter())
-    parser.add_option('-s', '--suite',
-                      default='smoke',
-                      dest='suite',
-                      action='store',
-                      type='string',
-                      help='specify test type, smoke or full. Default = full')
+    parser = argparse.ArgumentParser(usage='Hypereal interface automation test')
+    parser.add_argument('-e', '--env',
+                        default='dev',
+                        dest='env',
+                        action='store',
+                        type=str,
+                        help='specify a server, dev or production. Default = dev')
 
-    parser.add_option('-e', '--env',
-                      default='dev',
-                      dest='env',
-                      action='store',
-                      type='string',
-                      help='specify a server, dev or production. Default = dev')
+    parser.add_argument('-p', '--port',
+                        default='8080',
+                        dest='port',
+                        action='store',
+                        type=str,
+                        help='specify a port number. Default = 8080')
 
-    parser.add_option('-p', '--port',
-                      default='8080',
-                      dest='port',
-                      action='store',
-                      type='string',
-                      help='specify a port number. Default = 8080')
+    parser.add_argument('-s', '--suite',
+                        default='full',
+                        dest='suite',
+                        action='store',
+                        type=str,
+                        help='specify test type, smoke or full or specific test class. Default = full')
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    env = options.env
-    port = options.port
-    suite = options.suite
-    suite = 'full'
+    env = args.env
+    port = args.port
+    suite = args.suite
     clean_reports()
 
     if suite == 'smoke':
